@@ -94,14 +94,14 @@ while True:
     for i in range(3):
         # The read_adc function will get the value of the specified channel (0-7).
         values[i] = mcp.read_adc(i)
-    Selector = Value(0)
-    Mix1_ADC = Value(1)
-    Mix2_ADC = Value(2)
-    Mix2 = getmix2_distortion(Mix2_ADC)
-    Mix1 = getmix1_distortion(Mix1_ADC)
-    if(Selector < 1024):
+    Selector = values[0]
+    Mix1_ADC = values[1]
+    Mix2_ADC = values[2]
+    Mix2 = getmix2_distortion(float(Mix2_ADC))
+    Mix1 = getmix1_distortion(float(Mix1_ADC))
+    if(Selector > 1024):
         Filrename = 'Clean'
-    else
+    else:
         Filename = 'Distortion'
     if(Old_Filename != Filename):
         os.system('pkill pd')

@@ -18,13 +18,12 @@ lcd_rows = 2
 lcd = LCD.Adafruit_CharLCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7, lcd_columns, lcd_rows, lcd_backlight)
 
 
-#Setting up ADC
-
-##CLK  = 18
-##MISO = 23
-##MOSI = 24
-##CS   = 25
-##mcp = Adafruit_MCP3008.MCP3008(clk=CLK, cs=CS, miso=MISO, mosi=MOSI)
+#Setting up ADC pin configuration:
+CLK  = 5
+MISO = 6
+MOSI = 13
+CS   = 19
+mcp = Adafruit_MCP3008.MCP3008(clk=CLK, cs=CS, miso=MISO, mosi=MOSI)
 
 #user definitions
 
@@ -65,6 +64,18 @@ def RunEffect(x):
                  stdout=open('/dev/null', 'w'),
                  stderr=open('logfil.log', 'a'),
                  preexec_fn=os.setpgrp)
+def StopEffect():
+    os.system('pkill pd')
+
+    
+def getmix1_distortion(x):
+    value = (x/2048)*4
+    return value
+
+def getmix2_distortion(x):
+    value = (x/2048)*25
+    return value
+
 lcd.clear()
 
 lcd.message('Please Wait...')
@@ -76,11 +87,31 @@ RunEffect(Filename)
 time.sleep(1)
 lcd.clear()
 lcd.message(Filename)
+Old_Filename = 'Clean'
 
 while True:
+    values = [0]*3
+    for i in range(3):
+        # The read_adc function will get the value of the specified channel (0-7).
+        values[i] = mcp.read_adc(i)
+    Selector = Value(0)
+    Mix1_ADC = Value(1)
+    Mix2_ADC = Value(2)
+    Mix2 = getmix2_distortion(Mix2_ADC)
+    Mix1 = getmix1_distortion(Mix1_ADC)
+    if(Selector < 1024):
+        Filrename = 'Clean'
+    else
+        Filename = 'Distortion'
+    if(Old_Filename != Filename):
+        os.system('pkill pd')
+        lcd.clear()
+        RunEffect(Filename)
+        lcd.message(Filename)
     AudioOn()
     time.sleep(.2)
-    setMix1(4)
+    setMix1(Mix1)
     time.sleep(.2)
-    setMix2(25)
+    setMix2(Mix2)
     time.sleep(.2)
+    Old_Filename = Filename

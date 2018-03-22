@@ -4,6 +4,7 @@ import Adafruit_GPIO.SPI as SPI
 import Adafruit_MCP3008
 import Adafruit_CharLCD as LCD
 import subprocess
+import socket
 
 # Raspberry Pi pin configuration:
 lcd_rs = 25
@@ -28,16 +29,16 @@ mcp = Adafruit_MCP3008.MCP3008(clk=CLK, cs=CS, miso=MISO, mosi=MOSI)
 #user definitions
 
 def send2Pd1(message=' '):
-    os.system("echo '" + message + "' |pdsend 3000")
+    os.system("echo '" + message + "' |pdsend 3000 localhost udp")
 
 def send2Pd2(message=' '):
-    os.system("echo '" + message + "' |pdsend 2900")
+    os.system("echo '" + message + "' |pdsend 2900 localhost udp")
 
 def send2Pd3(message=' '):
-    os.system("echo '" + message + "' |pdsend 2800")
+    os.system("echo '" + message + "' |pdsend 2800 localhost udp")
 
 def send2Pd4(message=' '):
-    os.system("echo '" + message + "' |pdsend 2700")
+    os.system("echo '" + message + "' |pdsend 2700 localhost udp")
 
 def AudioOff():
     message = '0 0;'
@@ -64,6 +65,7 @@ def RunEffect(x):
                  stdout=open('/dev/null', 'w'),
                  stderr=open('logfil.log', 'a'),
                  preexec_fn=os.setpgrp)
+    
 def StopEffect():
     os.system('pkill pd')
 

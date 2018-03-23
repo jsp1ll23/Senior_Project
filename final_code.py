@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os
 import time
 import Adafruit_GPIO.SPI as SPI
@@ -61,7 +62,7 @@ def ClosePd():
     send2Pd4(message)
 
 def RunEffect(x):
-    subprocess.Popen(['nohup', 'pd', x + '.pd'],
+    subprocess.Popen(['nohup', 'pd','/home/pi/Senior_Project/'+ x + '.pd'],
                  stdout=open('/dev/null', 'w'),
                  stderr=open('logfil.log', 'a'),
                  preexec_fn=os.setpgrp)
@@ -102,7 +103,7 @@ while True:
     Mix2 = getmix2_distortion(float(Mix2_ADC))
     Mix1 = getmix1_distortion(float(Mix1_ADC))
     if(Selector > 1024):
-        Filrename = 'Clean'
+        Filename = 'Clean'
     else:
         Filename = 'Distortion'
     if(Old_Filename != Filename):

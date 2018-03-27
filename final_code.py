@@ -66,11 +66,11 @@ def RunEffect(x):
                  stdout=open('/dev/null', 'w'),
                  stderr=open('logfil.log', 'a'),
                  preexec_fn=os.setpgrp)
-    
+
 def StopEffect():
     os.system('pkill pd')
 
-    
+
 def getmix1_distortion(x):
     value = (x/2048)*4
     return value
@@ -80,9 +80,6 @@ def getmix2_distortion(x):
     return value
 
 lcd.clear()
-
-lcd.message('Please Wait...')
-
 #Initially open Clean effect
 Filename = 'Clean'
 RunEffect(Filename)
@@ -102,7 +99,7 @@ while True:
     Mix2_ADC = values[2]
     Mix2 = getmix2_distortion(float(Mix2_ADC))
     Mix1 = getmix1_distortion(float(Mix1_ADC))
-    if(Selector > 1024):
+    if(Selector < 750 ):
         Filename = 'Clean'
     else:
         Filename = 'Distortion'

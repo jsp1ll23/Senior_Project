@@ -1,4 +1,12 @@
-#N canvas 2 101 450 300 10;
+#N canvas 2 107 584 300 10;
 #X obj 182 46 adc~;
 #X obj 182 68 dac~;
+#X obj 304 42 netreceive 3000;
+#X obj 303 73 route 0;
+#X obj 303 110 s audio_on_off;
+#X obj 482 38 r audio_on_off;
+#X msg 479 116 \; pd dsp \$1 \;;
 #X connect 0 0 1 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 5 0 6 0;

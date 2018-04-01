@@ -30,16 +30,13 @@ mcp = Adafruit_MCP3008.MCP3008(clk=CLK, cs=CS, miso=MISO, mosi=MOSI)
 #user definitions
 
 def send2Pd1(message=' '):
-    os.system("echo '" + message + "' |pdsend 3000 localhost udp")
+    os.system("echo '" + message + "' |pdsend 3400")
 
 def send2Pd2(message=' '):
-    os.system("echo '" + message + "' |pdsend 2900 localhost udp")
+    os.system("echo '" + message + "' |pdsend 3300")
 
 def send2Pd3(message=' '):
-    os.system("echo '" + message + "' |pdsend 2800 localhost udp")
-
-def send2Pd4(message=' '):
-    os.system("echo '" + message + "' |pdsend 2700 localhost udp")
+    os.system("echo '" + message + "' |pdsend 3200")
 
 def AudioOff():
     message = '0 0;'
@@ -57,10 +54,6 @@ def setMix2(mix2):
     message = '0 ' + str(mix2) + ';'
     send2Pd3(message)
 
-def ClosePd():
-    message = '0 1;'
-    send2Pd4(message)
-
 def RunEffect(x):
     subprocess.Popen(['nohup', 'pd','/home/pi/Senior_Project/'+ x + '.pd'],
                  stdout=open('/dev/null', 'w'),
@@ -72,11 +65,11 @@ def StopEffect():
 
 
 def getmix1_distortion(x):
-    value = (x/2048)*4
+    value = (x/1023)*4
     return value
 
 def getmix2_distortion(x):
-    value = (x/2048)*25
+    value = (x/1023)*25
     return value
 
 lcd.clear()
@@ -97,14 +90,16 @@ while True:
     Selector = values[0]
     Mix1_ADC = values[1]
     Mix2_ADC = values[2]
-    Mix2 = getmix2_distortion(float(Mix2_ADC))
-    Mix1 = getmix1_distortion(float(Mix1_ADC))
     if(Selector < 750 ):
         Filename = 'Clean'
+        Mix1 = 0
+        Mix2 = 0
     else:
         Filename = 'Distortion'
+        Mix2 = getmix2_distortion(float(Mix2_ADC))
+        Mix1 = getmix1_distortion(float(Mix1_ADC))
     if(Old_Filename != Filename):
-        os.system('pkill pd')
+        StopEffect()
         lcd.clear()
         RunEffect(Filename)
         lcd.message(Filename)

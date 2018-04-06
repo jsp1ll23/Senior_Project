@@ -65,37 +65,32 @@ def StopEffect():
 
 
 def getmix1_distortion(x):
-    value = (x/1023)*4
+    value = (x/1023)*200
     return value
 
 def getmix2_distortion(x):
-    value = (x/1023)*25
+    value = (x/1023)*100
     return value
 
 lcd.clear()
-#Initially open Clean effect
-Filename = 'Clean'
-RunEffect(Filename)
-
-time.sleep(1)
-lcd.clear()
-lcd.message(Filename)
-Old_Filename = 'Clean'
+Old_Filename = '0'
 
 while True:
     values = [0]*3
     for i in range(3):
         # The read_adc function will get the value of the specified channel (0-7).
         values[i] = mcp.read_adc(i)
-    Selector = values[0]
+    Selector = values[2]
     Mix1_ADC = values[1]
-    Mix2_ADC = values[2]
-    if(Selector < 750 ):
+    Mix2_ADC = values[0]
+    if(Selector < 512 ):
         Filename = 'Clean'
+        Mixname = '\nNon-edit'
         Mix1 = 0
         Mix2 = 0
     else:
         Filename = 'Distortion'
+        Mixname = '\nHarshness, Vol'
         Mix2 = getmix2_distortion(float(Mix2_ADC))
         Mix1 = getmix1_distortion(float(Mix1_ADC))
     if(Old_Filename != Filename):
@@ -103,6 +98,7 @@ while True:
         lcd.clear()
         RunEffect(Filename)
         lcd.message(Filename)
+        lcd.message(Mixname)
     AudioOn()
     time.sleep(.2)
     setMix1(Mix1)

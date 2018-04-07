@@ -1,0 +1,31 @@
+#N canvas 2 99 1351 675 10;
+#X obj 126 245 freeverb~;
+#X obj 109 97 adc~;
+#X obj 124 382 dac~;
+#X msg 218 140 roomsize \$1;
+#X obj 232 81 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 259 58 5 0 0 0 - - -, f 5;
+#X obj 413 199 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 303 200 5 0 0 0 - - -, f 5;
+#X msg 276 245 damping \$1;
+#X floatatom 307 285 5 0 1 0 - - -, f 5;
+#X msg 229 348 wet \$1;
+#X msg 302 379 dry \$1;
+#X obj 307 345 -;
+#X floatatom 271 288 5 0 0 0 - - -, f 5;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 3 0;
+#X connect 4 0 5 0;
+#X connect 6 0 8 0;
+#X connect 6 0 7 0;
+#X connect 8 0 0 0;
+#X connect 9 0 10 0;
+#X connect 9 0 12 1;
+#X connect 10 0 0 0;
+#X connect 11 0 0 0;
+#X connect 12 0 11 0;
+#X connect 13 0 12 0;

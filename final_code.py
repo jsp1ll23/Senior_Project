@@ -60,6 +60,10 @@ def setMix2(mix2):
     message = '1 ' + str(mix2) + ';'
     send2Pd3(message)
 
+def setMix3():
+    message = '2 89;'
+    send2Pd3(message)
+
 def setroom(mix1):
     message = '0 ' + str(mix1) + ';'
     send2Pd5(message)
@@ -93,7 +97,7 @@ def getmix1_distortion(x):
     return value
 
 def getmix2_distortion(x):
-    value = (x/1023)*50
+    value = (x/1023)*5
     return value
 
 def getmix_reverb(x):
@@ -128,6 +132,7 @@ while True:
         Mixname = '\nHarshness, Vol'
         setMix1(getmix1_distortion(float(Mix1_ADC)))
         setMix2(getmix2_distortion(float(Mix2_ADC)))
+        setMix3()
         Clean(0)
         Reverb(0)
         Distortion(1)

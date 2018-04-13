@@ -93,11 +93,11 @@ def Reverb(x):
     send2Pd1(message)
 
 def getmix1_distortion(x):
-    value = (x/1023)*1
+    value = (x/1023)*100
     return value
 
 def getmix2_distortion(x):
-    value = (x/1023)*5
+    value = (x/1023)*1
     return value
 
 def getmix_reverb(x):
